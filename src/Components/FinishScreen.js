@@ -1,4 +1,6 @@
-function FinishScreen({ points, maxPoints , highscore,dispatch}) {
+import { useEffect } from "react";
+
+function FinishScreen({ points, maxPoints, highscore, dispatch }) {
   const percentage = Math.ceil((points / maxPoints) * 100);
   let emoji;
 
@@ -10,6 +12,10 @@ function FinishScreen({ points, maxPoints , highscore,dispatch}) {
   if (percentage < 25 && percentage > 0) emoji = "😒";
   if (percentage === 0) emoji = "🤢";
 
+  useEffect(function () {
+    localStorage.setItem("highscore", highscore);
+  }, []);
+
   return (
     <>
       <p className="result">
@@ -18,7 +24,12 @@ function FinishScreen({ points, maxPoints , highscore,dispatch}) {
       </p>
       <p className="highscore">(Highscore : {highscore} points)</p>
 
-      <button className="btn btn-ui" onClick={() => dispatch({type : "restart"})}>Restart</button>
+      <button
+        className="btn btn-ui"
+        onClick={() => dispatch({ type: "restart" })}
+      >
+        Restart
+      </button>
     </>
   );
 }
