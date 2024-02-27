@@ -21,6 +21,7 @@ const initial = {
   points: 0,
   highscore: 0,
   secondeRemaining: null,
+  difficulty: "normal",
 };
 
 function reducer(state, action) {
@@ -69,6 +70,11 @@ function reducer(state, action) {
         secondeRemaining: state.secondeRemaining - 1,
         status: state.secondeRemaining < 1 ? "finish" : state.status,
       };
+    case "dif":
+      return {
+        ...state,
+        difficulty: action.payload,
+      };
     default:
       throw new Error("Unknown action");
   }
@@ -84,10 +90,12 @@ export default function App() {
     points,
     highscore,
     secondeRemaining,
+    difficulty,
   } = state;
 
-  const numQuestions = questions.length;
-  const maxPoints = questions.reduce((prev, cur) => prev + cur.points, 0);
+  const tempQuestions = difficulty === "easy" ? questions.filter(question => question.points === 10) : difficulty === "normal" ? questions.filter(question => question.points !== 30) : questions;
+  const numQuestions = tempQuestions.length;
+  const maxPoints = tempQuestions.reduce((prev, cur) => prev + cur.points, 0);
 
   useEffect(function () {
     fetch("http://localhost:8000/questions")
@@ -103,7 +111,11 @@ export default function App() {
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
         {status === "ready" && (
-          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+          <StartScreen
+            numQuestions={numQuestions}
+            dispatch={dispatch}
+            difficulty={difficulty}
+          />
         )}
         {status === "active" && (
           <>
@@ -115,7 +127,7 @@ export default function App() {
               numQuestions={numQuestions}
             />
             <Questions
-              question={questions.at(index)}
+              question={tempQuestions.at(index)}
               dispatch={dispatch}
               answer={answer}
             />

@@ -10,7 +10,7 @@ function Button({ dispatch, answer, index, numQuestions }) {
         Next
       </button>
     );
-  if (index === 14)
+  if (index === numQuestions - 1)
     return (
       <button
         onClick={() => dispatch({ type: "finishQuestion" })}

@@ -257,3 +257,18 @@ progress {
   font-size: inherit;
   padding: 0.8rem;
 }
+
+.filter {
+  transform: translate(300px, 50px);
+  display: block;
+  font-family: inherit;
+  color: inherit;
+  font-size: 2rem;
+  border: 2px solid var(--color-dark);
+  background-color: var(--color-dark);
+  padding: 1.2rem 2.4rem;
+  outline: none;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.3s;
+}
